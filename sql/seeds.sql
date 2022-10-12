@@ -1,0 +1,52 @@
+INSERT INTO days (id, name) VALUES (1, 'Monday');
+INSERT INTO days (id, name) VALUES (2, 'Tuesday');
+INSERT INTO days (id, name) VALUES (3, 'Wednesday');
+INSERT INTO days (id, name) VALUES (4, 'Thursday');
+INSERT INTO days (id, name) VALUES (5, 'Friday');
+ALTER SEQUENCE days_id_seq RESTART WITH 6;
+
+INSERT INTO interviewers (id, name, avatar) VALUES (1, 'Mauricio Tomaz', 'https://avatars.githubusercontent.com/u/6640031?v=4');
+INSERT INTO interviewers (id, name, avatar) VALUES (2, 'Megumi Akama', 'https://avatars.githubusercontent.com/u/73773287?v=4');
+INSERT INTO interviewers (id, name, avatar) VALUES (3, 'Yuto Yamakita', 'https://avatars.githubusercontent.com/u/75427166?v=4');
+INSERT INTO interviewers (id, name, avatar) VALUES (4, 'Kento Honda', 'https://avatars.githubusercontent.com/u/65790344?v=4');
+INSERT INTO interviewers (id, name, avatar) VALUES (5, 'Gabriel Brito', 'https://avatars.githubusercontent.com/u/86431420?v=4');
+INSERT INTO interviewers (id, name, avatar) VALUES (6, 'Jorge Ruiz', 'https://avatars.githubusercontent.com/u/97487049?v=4');
+ALTER SEQUENCE interviewers_id_seq RESTART WITH 7;
+
+INSERT INTO appointments (id, time, day_id) VALUES (1, '12pm', 1);
+INSERT INTO appointments (id, time, day_id) VALUES (2, '3pm', 1);
+INSERT INTO appointments (id, time, day_id) VALUES (3, '2pm', 2);
+INSERT INTO appointments (id, time, day_id) VALUES (4, '4pm', 2);
+INSERT INTO appointments (id, time, day_id) VALUES (5, '1pm', 3);
+INSERT INTO appointments (id, time, day_id) VALUES (6, '12pm', 3);
+INSERT INTO appointments (id, time, day_id) VALUES (7, '3pm', 4);
+INSERT INTO appointments (id, time, day_id) VALUES (8, '2pm', 4);
+INSERT INTO appointments (id, time, day_id) VALUES (9, '4pm', 5);
+INSERT INTO appointments (id, time, day_id) VALUES (10, '1pm', 5);
+ALTER SEQUENCE appointments_id_seq RESTART WITH 11;
+
+INSERT INTO interviews (id, interviewer_id, appointment_id, student) VALUES (1, 5, 6, 'Nicolas');
+INSERT INTO interviews (id, interviewer_id, appointment_id, student) VALUES (2, 6, 1, 'Koki');
+INSERT INTO interviews (id, interviewer_id, appointment_id, student) VALUES (3, 1, 2, 'Vini');
+INSERT INTO interviews (id, interviewer_id, appointment_id, student) VALUES (4, 3, 3, 'Tatiana');
+ALTER SEQUENCE interviews_id_seq RESTART WITH 5;
+
+INSERT INTO available_interviewers (id, interviewer_id, day_id) VALUES (1, 1, 1);
+INSERT INTO available_interviewers (id, interviewer_id, day_id) VALUES (2, 1, 2);
+INSERT INTO available_interviewers (id, interviewer_id, day_id) VALUES (3, 1, 3);
+INSERT INTO available_interviewers (id, interviewer_id, day_id) VALUES (4, 1, 4);
+INSERT INTO available_interviewers (id, interviewer_id, day_id) VALUES (5, 1, 5);
+INSERT INTO available_interviewers (id, interviewer_id, day_id) VALUES (6, 2, 3);
+INSERT INTO available_interviewers (id, interviewer_id, day_id) VALUES (7, 2, 4);
+INSERT INTO available_interviewers (id, interviewer_id, day_id) VALUES (8, 3, 1);
+INSERT INTO available_interviewers (id, interviewer_id, day_id) VALUES (9, 3, 2);
+INSERT INTO available_interviewers (id, interviewer_id, day_id) VALUES (10, 3, 3);
+INSERT INTO available_interviewers (id, interviewer_id, day_id) VALUES (11, 3, 4);
+INSERT INTO available_interviewers (id, interviewer_id, day_id) VALUES (12, 3, 5);
+INSERT INTO available_interviewers (id, interviewer_id, day_id) VALUES (13, 4, 1);
+INSERT INTO available_interviewers (id, interviewer_id, day_id) VALUES (14, 5, 1);
+INSERT INTO available_interviewers (id, interviewer_id, day_id) VALUES (15, 5, 3);
+INSERT INTO available_interviewers (id, interviewer_id, day_id) VALUES (16, 5, 5);
+INSERT INTO available_interviewers (id, interviewer_id, day_id) VALUES (17, 6, 1);
+INSERT INTO available_interviewers (id, interviewer_id, day_id) VALUES (18, 6, 2);
+ALTER SEQUENCE available_interviewers_id_seq RESTART WITH 19;
