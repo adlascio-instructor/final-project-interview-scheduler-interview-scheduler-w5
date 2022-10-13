@@ -3,11 +3,24 @@ const { Pool } = require("pg");
 const credentials = require('../shared/credentials');
 
 const router = express.Router();
-// Days route (Get all days and quantity of appointments available)
 router.get('/', async (req, res) => {
     const pool = new Pool(credentials);
-    const response = await pool.query('SELECT * FROM days');
-    res.json(response.rows);
+    const days = await pool.query(
+    `SELECT days.*, COUNT(appointments.time) - COUNT(interviews.id) AS spots FROM days
+     INNER JOIN appointments
+     ON days.id = appointments.day_id
+     LEFT JOIN interviews
+     ON appointments.id = interviews.appointment_id
+     GROUP BY days.id
+     ORDER BY days.id;
+     `
+    );
+    let daysObj = {};
+    days.rows.map((day) => {
+        day['spots'] = day.spots;
+        daysObj[day.name] = day;
+    })
+    res.json(daysObj);
     pool.end();
 });
 
