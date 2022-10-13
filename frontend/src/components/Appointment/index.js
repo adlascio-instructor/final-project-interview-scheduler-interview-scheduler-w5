@@ -6,11 +6,14 @@ import Form from "./Form";
 import Confirm from "./Confirm";
 
 import "./styles.scss";
+import axios from "axios";
 
 const Appointment = (props) => {
   const [add, setAdd] = React.useState(false);
   const [edit, setEdit] = React.useState(false);
   const [isDeleting, setIsDeleting] = React.useState(false);
+  const [interviewers, setInterviewers] = React.useState([]);
+
   function save(name, interviewer) {
     const interview = {
       student: name,
@@ -19,13 +22,13 @@ const Appointment = (props) => {
     setEdit(false);
     props.bookInterview(interview);
   }
-  const interviewers = [
-    { id: 1, name: "Sylvia Palmer", avatar: "https://i.imgur.com/LpaY82x.png" },
-    { id: 2, name: "Tori Malcolm", avatar: "https://i.imgur.com/Nmx0Qxo.png" },
-    { id: 3, name: "Mildred Nazir", avatar: "https://i.imgur.com/T2WwVfS.png" },
-    { id: 4, name: "Cohana Roy", avatar: "https://i.imgur.com/FK8V841.jpg" },
-    { id: 5, name: "Sven Jones", avatar: "https://i.imgur.com/twYrpay.jpg" },
-  ];
+
+  React.useEffect(() => {
+    axios.get(`http://localhost:8000/interviewers/available/${props.day}`).then((res) => {
+      setInterviewers(res.data);
+    });
+  }, []);
+
   return (
     <article className="appointment">
       <Header time={props.time} />

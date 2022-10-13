@@ -4,8 +4,8 @@ const credentials = require('../shared/credentials');
 
 const router = express.Router();
 
-router.get('/:dayId', async (req, res) => {
-    const { dayId } = req.params;
+router.get('/:day', async (req, res) => {
+    const { day } = req.params;
 
     const pool = new Pool(credentials);
     const response = await pool.query(
@@ -14,8 +14,9 @@ router.get('/:dayId', async (req, res) => {
         interviewers.avatar as interviewer_avatar
         FROM appointments LEFT JOIN interviews ON appointments.id = interviews.appointment_id
         LEFT JOIN interviewers ON interviews.interviewer_id = interviewers.id
-        WHERE day_id = $1`,
-        [dayId]
+        INNER JOIN days ON days.id = appointments.day_id
+        WHERE days.name = $1`,
+        [day]
     );
 
     const data = response

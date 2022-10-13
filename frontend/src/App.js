@@ -11,6 +11,7 @@ export default function Application() {
   const [day, setDay] = useState("Monday");
   const [days, setDays] = useState({});
   const [appointments, setAppointments] = useState(appointmentsData);
+
   function bookInterview(id, interview) {
     console.log(id, interview);
     const isEdit = appointments[id].interview;
@@ -63,12 +64,20 @@ export default function Application() {
       return days;
     });
   }
+
   useEffect(() => {
     axios.get('http://localhost:8000/days')
     .then((res) => {
       setDays(res.data);
     });
   }, []);
+
+  useEffect(() => {
+    axios.get(`http://localhost:8000/interviews/${day}`).then((res) => {
+      setAppointments(res.data);
+    })
+  }, [day]);
+
   return (
     <main className="layout">
       <section className="sidebar">
@@ -91,6 +100,7 @@ export default function Application() {
               bookInterview(appointment.id, interview)
             }
             cancelInterview={cancelInterview}
+            day={day}
           />
         ))}
         <Appointment key="last" time="5pm" />
