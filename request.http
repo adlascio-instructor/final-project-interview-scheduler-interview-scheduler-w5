@@ -1,6 +1,5 @@
-POST http://localhost:8000/interviews
-Content-Type: application/json
+GET http://localhost:8000/interviews/2
 
-{
-    "hello": "world"
-}
+###
+
+GET http://localhost:8000/interviewers/available/2
