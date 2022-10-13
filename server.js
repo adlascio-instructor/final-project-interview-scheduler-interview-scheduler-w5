@@ -6,6 +6,9 @@ const interviewersRoute = require('./routes/interviewers');
 const app = express();
 const port = 8000;
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 app.use('/days', daysRoute);
 app.use('/interviews', interviewsRoute);
 app.use('/interviewers', interviewersRoute);
