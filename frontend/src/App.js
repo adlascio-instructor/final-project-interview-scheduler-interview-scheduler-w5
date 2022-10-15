@@ -6,14 +6,19 @@ import DayList from "./components/DayList";
 import Appointment from "./components/Appointment";
 import appointmentsData from "./components/__mocks__/appointments.json";
 import axios from "axios";
+import { io } from "socket.io-client";
+
+let socket;
 
 export default function Application() {
   const [day, setDay] = useState("Monday");
   const [days, setDays] = useState({});
   const [appointments, setAppointments] = useState(appointmentsData);
-
-  function bookInterview(id, interview) {
+  function bookInterview(id, interview, shouldEmit = true) {
     console.log(id, interview);
+    if (shouldEmit) {
+      socket.emit("create_interview", {...interview, appointment_id:id});
+    }
     const isEdit = appointments[id].interview;
     setAppointments((prev) => {
       const appointment = {
@@ -70,6 +75,10 @@ export default function Application() {
     .then((res) => {
       setDays(res.data);
     });
+    socket = io('http://localhost:8000');
+    socket.on("new_interview", (interview)=> {
+      bookInterview(interview.appointment_id, interview, false);
+    })
   }, []);
 
   useEffect(() => {
