@@ -17,7 +17,7 @@ router.get('/', async (req, res) => {
     );
     let daysObj = {};
     days.rows.map((day) => {
-        day['spots'] = day.spots;
+        day['spots'] = parseInt(day.spots);
         daysObj[day.name] = day;
     })
     res.json(daysObj);
