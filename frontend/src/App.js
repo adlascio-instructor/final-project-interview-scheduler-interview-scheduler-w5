@@ -4,7 +4,6 @@ import "./App.scss";
 
 import DayList from "./components/DayList";
 import Appointment from "./components/Appointment";
-import appointmentsData from "./components/__mocks__/appointments.json";
 import axios from "axios";
 import { io } from "socket.io-client";
 
@@ -13,13 +12,17 @@ let socket;
 export default function Application() {
   const [day, setDay] = useState("Monday");
   const [days, setDays] = useState({});
-  const [appointments, setAppointments] = useState(appointmentsData);
+  const [appointments, setAppointments] = useState({});
+
   function bookInterview(id, interview, shouldEmit = true) {
-    console.log(id, interview);
+    const isEdit = appointments[id] && appointments[id].interview;
     if (shouldEmit) {
-      socket.emit("create_interview", {...interview, appointment_id:id});
+      if (isEdit) {
+        socket.emit("update_interview", {...interview, id: appointments[id].interview.id, appointment_id: id });
+      } else {
+        socket.emit("create_interview", {...interview, appointment_id:id});
+      }
     }
-    const isEdit = appointments[id].interview;
     setAppointments((prev) => {
       const appointment = {
         ...prev[id],
@@ -45,7 +48,11 @@ export default function Application() {
       });
     }
   }
-  function cancelInterview(id) {
+
+  function cancelInterview(id, shouldEmit = true) {
+    if (shouldEmit) {
+      socket.emit("delete_interview", { appointment_id: id, id: appointments[id].interview.id });
+    }
     setAppointments((prev) => {
       const updatedAppointment = {
         ...prev[id],
@@ -76,9 +83,15 @@ export default function Application() {
       setDays(res.data);
     });
     socket = io('http://localhost:8000');
-    socket.on("new_interview", (interview)=> {
+    socket.on("interview_created", (interview)=> {
       bookInterview(interview.appointment_id, interview, false);
-    })
+    });
+    socket.on("interview_updated", (interview)=> {
+      bookInterview(interview.appointment_id, interview, false);
+    });
+    socket.on("interview_deleted", (appointmentId)=> {
+      cancelInterview(appointmentId, false);
+    });
   }, []);
 
   useEffect(() => {

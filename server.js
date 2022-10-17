@@ -34,8 +34,24 @@ io.on("connection", (socket) => {
     `INSERT INTO interviews(interviewer_id, appointment_id, student) VALUES($1, $2, $3);
      `, [interview.interviewer.id, interview.appointment_id, interview.student]
     );
-    socket.broadcast.emit("new_interview", interview);
-  })
+    socket.broadcast.emit("interview_created", interview);
+  });
+
+  socket.on("update_interview", async (interview) => {
+    const pool = new Pool(credentials);
+    await pool.query(
+    `UPDATE interviews SET student = $1, interviewer_id = $2 WHERE id = $3;
+     `, [interview.student, interview.interviewer.id, interview.id]
+    );
+    socket.broadcast.emit("interview_updated", interview);
+  });
+
+  socket.on("delete_interview", async (interview) => {
+    const pool = new Pool(credentials);
+    await pool.query('DELETE FROM interviews WHERE id = $1;', [interview.id]);
+    socket.broadcast.emit("interview_deleted", interview.appointment_id);
+  });
+
   socket.on("disconnect", () => {
     console.log("A client has disconnected");
   });
